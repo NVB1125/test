@@ -7,7 +7,21 @@
             <div class="logo" [routerLink]="'/home'">
                 <img src="assets/images/logos/logopng.png" style="cursor: pointer;">
             </div>
-
+            <div class=" loginRegisterLayout__subHeading--centered ">
+                <div
+                    class="loginRegisterLayout__subHeading loginRegisterLayout__subHeading--lined  loginRegisterLayout__subHeading--centered ">
+                </div>
+                <div class="socialLogin__btnContainer">
+                    <a id="social-log-in-facebook" role="button"><img src="assets/images/socialicon/fb.svg"></a> 
+                    <a id="social-log-in-linkedin" role="button"><img src="assets/images/socialicon/socialgoogle.svg"></a> 
+                    <a id="social-log-in-google" role="button"><img src="assets/images/socialicon/linkedin.svg"></a>
+                </div>
+            </div>
+            <div
+                class="loginRegisterLayout__subHeading loginRegisterLayout__subHeading--lined  loginRegisterLayout__subHeading--centered ">
+                <p class="loginRegisterLayout__subHeading__text">Or</p>
+            </div>
+            <div style="height:15px;"></div>
             <form name="loginForm" [formGroup]="loginForm" novalidate>
 
                 <mat-form-field appearance="outline">
@@ -16,8 +30,7 @@
                     <mat-error *ngIf="loginForm.get('email').hasError('required')">
                         Email is required
                     </mat-error>
-                    <mat-error
-                        *ngIf="!loginForm.get('email').hasError('required') &&
+                    <mat-error *ngIf="!loginForm.get('email').hasError('required') &&
                                 loginForm.get('email').hasError('email')">
                         Please input valid email address
                     </mat-error>
@@ -31,7 +44,7 @@
                     </mat-error>
                 </mat-form-field>
 
-                
+
                 <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN"
                     [disabled]="loginForm.invalid" (click)="loginBtn()">
                     SIGN IN
@@ -43,8 +56,6 @@
                     <a class="link" [routerLink]="'/auth/register'">Register</a>
                 </div>
             </form>
-
-
         </div>
 
     </div>
