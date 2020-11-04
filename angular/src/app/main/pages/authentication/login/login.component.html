@@ -1,0 +1,52 @@
+<div id="login" fxLayout="column">
+
+    <div id="login-form-wrapper" fxLayout="column" fxLayoutAlign="center center">
+
+        <div id="login-form" [@animate]="{value:'*',params:{duration:'300ms',y:'100px'}}">
+
+            <div class="logo" [routerLink]="'/home'">
+                <img src="assets/images/logos/logopng.png" style="cursor: pointer;">
+            </div>
+
+            <form name="loginForm" [formGroup]="loginForm" novalidate>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Email Address</mat-label>
+                    <input matInput formControlName="email">
+                    <mat-error *ngIf="loginForm.get('email').hasError('required')">
+                        Email is required
+                    </mat-error>
+                    <mat-error
+                        *ngIf="!loginForm.get('email').hasError('required') &&
+                                loginForm.get('email').hasError('email')">
+                        Please input valid email address
+                    </mat-error>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput type="password" formControlName="password">
+                    <mat-error>
+                        Password is required
+                    </mat-error>
+                </mat-form-field>
+
+                
+                <button mat-raised-button color="accent" class="submit-button" aria-label="LOG IN"
+                    [disabled]="loginForm.invalid" (click)="loginBtn()">
+                    SIGN IN
+                </button>
+                <div class="register" fxLayout="row" fxLayoutAlign="center center">
+                    <a class="forgot-password" [routerLink]="'/auth/forgot-password'">
+                        Forgot password
+                    </a>
+                    <a class="link" [routerLink]="'/auth/register'">Register</a>
+                </div>
+            </form>
+
+
+        </div>
+
+    </div>
+
+</div>

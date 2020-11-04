@@ -1,0 +1,22 @@
+<mat-form-field appearance="outline">
+  <mat-label>Description</mat-label>
+  <textarea matInput autosize rows="1" [(ngModel)]="description"></textarea>
+</mat-form-field>
+<!-- <input type="file" accept="image/*" capture="environment" style="display: none;" #camera (change)="uploadFile($event.target.files)">
+<div>
+  <mat-icon (click)="camera.click()" style="cursor: pointer;">camera</mat-icon>
+</div> -->
+<div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop (onFileDropped)="uploadFile($event)">
+  <input hidden type="file" #fileInput (change)="uploadFile($event.target.files)">
+</div>
+<div fxLayout="row" class="files-list" *ngFor="let file of files;let i=index">
+  <img [src]="file.src" alt="" fxFlex="50">
+  <div fxLayout="column" fxFlex="50" class="name">
+    <span style="word-break: break-all;">{{file.name}}</span>
+    <button class="delete-file" (click)="deleteAttachment(i)">
+      <img src="../../../../assets/Recycle_Bin_Full.png">
+    </button>
+  </div>
+</div>
+<button mat-stroked-button color="accent" (click)="post()" [disabled]="!description || files.length == 0">POST</button>
+

@@ -1,0 +1,27 @@
+<div class="page-layout blank" fusePerfectScrollbar style="padding: 10px 0px">
+    <div fxLayout="row" fxLayout.lt-lg="column">
+        <div fxLayout="column" fxFlex="50" fxFlex.lt-lg="100">
+            <div *ngFor="let item of postSrc">
+                <img [src]="item" alt="">
+            </div>
+        </div>
+        <div fxFlex="50" fxFlex.lt-lg="100" class="comments"> 
+            <div *ngFor="let item of postDetail.comments">
+                <span>{{item.comment}} - </span>
+                <span style="color: blue;"> {{item.username}} </span>
+                <span> {{item.created_time}} </span>
+            </div>
+            <mat-form-field *ngIf="isAdd">
+                <mat-label>Your Comment</mat-label>
+                <textarea rows="1" matInput autosize [(ngModel)]="comment"></textarea>
+            </mat-form-field>
+            <div style="text-align: right;" *ngIf="!isAdd">
+                <button mat-stroked-button color="accent" (click)="addComment()">+Add Comment</button>
+            </div>
+            <div style="text-align: right;" *ngIf="isAdd">
+                <button mat-stroked-button color="warn" style="margin-right: 10px;" (click)="cancel()">Cancel</button>
+                <button mat-stroked-button color="accent" (click)="submit()">Submit</button>
+            </div>
+        </div>
+    </div>
+</div>
