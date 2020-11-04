@@ -67,6 +67,7 @@ export class LoginComponent implements OnInit {
       password: ["", Validators.required],
     });
     this.googleSDK();
+    this.fbLibrary();
   }
 
   // -----------------------------------------------------------------------------------------------------
@@ -108,6 +109,28 @@ export class LoginComponent implements OnInit {
     }(document, 'script', 'google-jssdk'));
    
   }
+
+  fbLibrary() { 
+ 
+    (window as any).fbAsyncInit = function() {
+      window['FB'].init({
+        appId      : '869805000070130',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v3.1'
+      });
+      window['FB'].AppEvents.logPageView();
+    };
+ 
+    (function(d, s, id){
+       var js, fjs = d.getElementsByTagName(s)[0];
+       if (d.getElementById(id)) {return;}
+       js = d.createElement(s); js.id = id;
+       js.src = "https://connect.facebook.net/en_US/sdk.js";
+       fjs.parentNode.insertBefore(js, fjs);
+     }(document, 'script', 'facebook-jssdk'));
+ 
+  }
   /**
    * On init
    */ 
@@ -146,5 +169,24 @@ export class LoginComponent implements OnInit {
           });
         }
       );
+  }
+  loginfacebook() {
+ 
+    window['FB'].login((response) => {
+        console.log('login response',response);
+        if (response.authResponse) {
+ 
+          window['FB'].api('/me', {
+            fields: 'last_name, first_name, email'
+          }, (userInfo) => {
+ 
+            console.log("user information");
+            console.log(userInfo);
+          });
+           
+        } else {
+          console.log('User login failed');
+        }
+    }, {scope: 'email'});
   }
 }
