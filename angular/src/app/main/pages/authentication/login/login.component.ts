@@ -77,11 +77,24 @@ export class LoginComponent implements OnInit {
     this.auth2.attachClickHandler(this.img.nativeElement, {},
       (googleUser) => {   
         let profile = googleUser.getBasicProfile();
-        console.log('Token || ' + googleUser.getAuthResponse().id_token);
-        console.log('ID: ' + profile.getId());
-        console.log('Name: ' + profile.getName());
-        console.log('Image URL: ' + profile.getImageUrl());
-        console.log('Email: ' + profile.getEmail());
+        // console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        // console.log('ID: ' + profile.getId());
+        // console.log('Name: ' + profile.getName());
+        // console.log('Image URL: ' + profile.getImageUrl());
+        // console.log('Email: ' + profile.getEmail());
+        var Token = googleUser.getAuthResponse().id_token;
+        var ID = profile.getId();
+        var Name= profile.getName();
+        var ImageURL = profile.getImageUrl();
+        var Email = profile.getEmail();
+
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://localhost:3000/auth');
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onload = function() {
+          console.log('Signed in as: ' + xhr.responseText);
+        };
+        xhr.send('Token=' + Token);
         //YOUR CODE HERE
       }, (error) => {
         alert(JSON.stringify(error, undefined, 2));
@@ -108,32 +121,51 @@ export class LoginComponent implements OnInit {
       fjs.parentNode.insertBefore(js, fjs);
     }(document, 'script', 'google-jssdk'));
    
-  }
-
+  } 
   fbLibrary() { 
- 
+    
     (window as any).fbAsyncInit = function() {
-      window['FB'].init({
+        window['FB'].init({
         appId      : '869805000070130',
         cookie     : true,
         xfbml      : true,
         version    : 'v3.1'
-      });
-      window['FB'].AppEvents.logPageView();
+        });
+        window['FB'].AppEvents.logPageView();
     };
- 
+    
     (function(d, s, id){
-       var js, fjs = d.getElementsByTagName(s)[0];
-       if (d.getElementById(id)) {return;}
-       js = d.createElement(s); js.id = id;
-       js.src = "https://connect.facebook.net/en_US/sdk.js";
-       fjs.parentNode.insertBefore(js, fjs);
-     }(document, 'script', 'facebook-jssdk'));
- 
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    
   }
+  loginfacebook() {
+
+      window['FB'].login((response) => {
+          console.log('login response',response);
+          if (response.authResponse) {
+    
+            window['FB'].api('/me', {
+              fields: 'last_name, first_name, email'
+            }, (userInfo) => {
+    
+              console.log("user information");
+              console.log(userInfo);
+            });
+              
+          } else {
+            console.log('User login failed');
+          }
+      }, {scope: 'email'});
+  }
+
   /**
    * On init
-   */ 
+   */  
 
   loginBtn(): void {
     this.process = 'sending';
@@ -169,24 +201,5 @@ export class LoginComponent implements OnInit {
           });
         }
       );
-  }
-  loginfacebook() {
- 
-    window['FB'].login((response) => {
-        console.log('login response',response);
-        if (response.authResponse) {
- 
-          window['FB'].api('/me', {
-            fields: 'last_name, first_name, email'
-          }, (userInfo) => {
- 
-            console.log("user information");
-            console.log(userInfo);
-          });
-           
-        } else {
-          console.log('User login failed');
-        }
-    }, {scope: 'email'});
   }
 }

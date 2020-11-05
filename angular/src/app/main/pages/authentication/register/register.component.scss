@@ -137,6 +137,51 @@ register {
                     }
                 }
             }
+            .loginRegisterLayout__subHeading {
+                position: relative;
+            }
+            .loginRegisterLayout__subHeading--centered {
+                text-align: center;
+            }
+            .loginRegisterLayout__subHeading {
+                position: relative;
+            }
+            .socialLogin__btnContainer {                
+                display: -ms-flexbox;
+                display: flex;
+                justify-content: space-around;
+                padding: 30px 0 23px 0;
+            }
+            .loginRegisterLayout__subHeading--lined .loginRegisterLayout__subHeading__text {
+                padding-right: 12px;
+                background: #fff;
+                z-index: 20;
+                position: relative;
+                display: inline-block;
+                margin: 0 auto;
+                padding-left: 12px;                
+            }
+            .loginRegisterLayout__subHeading--lined:before {
+                content: "";
+                position: relative;
+                background: #ccc;
+                height: 1px;
+                top: 0;
+                width: 100%;
+                left: 0;
+                display: -webkit-box;
+                display: -ms-flexbox;
+                display: flex;
+                -webkit-box-orient: vertical;
+                -webkit-box-direction: normal;
+                -ms-flex-direction: column;
+                flex-direction: column;
+                -ms-flex-item-align: center;
+                align-self: center;
+                position: absolute;
+                top: 50%;
+                z-index: 1;
+            }
         }
     }
 }

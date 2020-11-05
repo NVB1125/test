@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation, ViewChild ,ElementRef} from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/internal/operators';
@@ -19,6 +19,8 @@ import { MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, MatSnackBar
     animations: fuseAnimations
 })
 export class RegisterComponent implements OnInit, OnDestroy {
+    auth2: any;
+   @ViewChild('ingoogle', {static: true }) img: ElementRef;
     horizontalPosition: MatSnackBarHorizontalPosition = 'end';
     verticalPosition: MatSnackBarVerticalPosition = 'top';
     registerForm: FormGroup;
@@ -71,7 +73,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
             email: ['', [Validators.required, Validators.email]],
             password: ['', Validators.required],
             passwordConfirm: ['', [Validators.required, confirmPasswordValidator]],
-            role: ['user'] // here normal user only created
+            role: ['user'] // here normal user only created            
         });
 
         // Update the validity of the 'passwordConfirm' field
@@ -81,8 +83,87 @@ export class RegisterComponent implements OnInit, OnDestroy {
             .subscribe(() => {
                 this.registerForm.get('passwordConfirm').updateValueAndValidity();
             });
+            this.googleSDK();
+            this.fbLibrary();
     }
 
+    prepareLoginImg() { 
+        this.auth2.attachClickHandler(this.img.nativeElement, {},
+          (googleUser) => {   
+            let profile = googleUser.getBasicProfile();
+            console.log('Token || ' + googleUser.getAuthResponse().id_token);
+            console.log('ID: ' + profile.getId());
+            console.log('Name: ' + profile.getName());
+            console.log('Image URL: ' + profile.getImageUrl());
+            console.log('Email: ' + profile.getEmail());
+            //YOUR CODE HERE
+          }, (error) => {
+            alert(JSON.stringify(error, undefined, 2));
+          });
+       
+      }   
+    googleSDK() { 
+    window['googleSDKLoaded'] = () => {
+        window['gapi'].load('auth2', () => {
+        this.auth2 = window['gapi'].auth2.init({
+            client_id: '188637199174-dnm6dm1r7k652d8ddqd122kgas9kho3e.apps.googleusercontent.com',
+            cookiepolicy: 'single_host_origin',
+            scope: 'profile email'
+        });
+        this.prepareLoginImg();
+        });
+    }
+    
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://apis.google.com/js/platform.js?onload=googleSDKLoaded";
+        fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'google-jssdk'));
+    
+    }
+    
+    fbLibrary() { 
+    
+    (window as any).fbAsyncInit = function() {
+        window['FB'].init({
+        appId      : '869805000070130',
+        cookie     : true,
+        xfbml      : true,
+        version    : 'v3.1'
+        });
+        window['FB'].AppEvents.logPageView();
+    };
+    
+    (function(d, s, id){
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) {return;}
+        js = d.createElement(s); js.id = id;
+        js.src = "https://connect.facebook.net/en_US/sdk.js";
+        fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    
+    }
+    loginfacebook() {
+ 
+        window['FB'].login((response) => {
+            console.log('login response',response);
+            if (response.authResponse) {
+     
+              window['FB'].api('/me', {
+                fields: 'last_name, first_name, email'
+              }, (userInfo) => {
+     
+                console.log("user information");
+                console.log(userInfo);
+              });
+               
+            } else {
+              console.log('User login failed');
+            }
+        }, {scope: 'email'});
+    }
     /**
      * On destroy
      */

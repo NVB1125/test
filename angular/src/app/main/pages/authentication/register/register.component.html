@@ -62,7 +62,15 @@
             <div class="register" fxLayout="column" fxLayoutAlign="center center">
                 <a class="link" [routerLink]="'/auth/login'">Login</a>
             </div>
-
+            <div class=" loginRegisterLayout__subHeading--centered ">
+                <div
+                    class="loginRegisterLayout__subHeading loginRegisterLayout__subHeading--lined  loginRegisterLayout__subHeading--centered ">
+                </div>
+                <div class="socialLogin__btnContainer">
+                    <a id="social-log-in-facebook" role="button"><img src="assets/images/socialicon/facebook.png" (click)="loginfacebook()"></a> 
+                    <a id="social-log-in-google" role="button"><img src="assets/images/socialicon/google.png"  #ingoogle></a>             
+                </div>
+            </div>
         </div>
 
     </div>
