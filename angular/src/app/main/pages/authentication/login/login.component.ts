@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewEncapsulation, ViewChild ,ElementRef} from "@angular/core";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators,ReactiveFormsModule } from "@angular/forms";
 
 import { FuseConfigService } from "@fuse/services/config.service";
 import { fuseAnimations } from "@fuse/animations";
@@ -77,24 +77,20 @@ export class LoginComponent implements OnInit {
     this.auth2.attachClickHandler(this.img.nativeElement, {},
       (googleUser) => {   
         let profile = googleUser.getBasicProfile();
-        // console.log('Token || ' + googleUser.getAuthResponse().id_token);
-        // console.log('ID: ' + profile.getId());
-        // console.log('Name: ' + profile.getName());
-        // console.log('Image URL: ' + profile.getImageUrl());
-        // console.log('Email: ' + profile.getEmail());
-        var Token = googleUser.getAuthResponse().id_token;
-        var ID = profile.getId();
-        var Name= profile.getName();
-        var ImageURL = profile.getImageUrl();
-        var Email = profile.getEmail();
+        console.log('Token || ' + googleUser.getAuthResponse().id_token);
+        console.log('ID: ' + profile.getId());
+        console.log('Name: ' + profile.getName());
+        console.log('Image URL: ' + profile.getImageUrl());
+        console.log('Email: ' + profile.getEmail());
+        
 
         var xhr = new XMLHttpRequest();
-        xhr.open('POST', 'https://localhost:3000/auth');
-        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.open('POST', 'https://localhost:3000/authgoogle');
+        xhr.setRequestHeader('Content-Type', 'google auth');
         xhr.onload = function() {
           console.log('Signed in as: ' + xhr.responseText);
         };
-        xhr.send('Token=' + Token);
+        xhr.send('Token=' + googleUser.getAuthResponse().id_token);
         //YOUR CODE HERE
       }, (error) => {
         alert(JSON.stringify(error, undefined, 2));
@@ -105,7 +101,7 @@ export class LoginComponent implements OnInit {
     window['googleSDKLoaded'] = () => {
       window['gapi'].load('auth2', () => {
         this.auth2 = window['gapi'].auth2.init({
-          client_id: '188637199174-dnm6dm1r7k652d8ddqd122kgas9kho3e.apps.googleusercontent.com',
+          client_id: '743239126098-63c2keqbg7iim40u9c62ovqs2enflvcb.apps.googleusercontent.com',
           cookiepolicy: 'single_host_origin',
           scope: 'profile email'
         });
