@@ -6,4 +6,5 @@ var router = require('express').Router();
 
 router.use('/api', require('./api'));
 router.use('/authgoogle', require('./authgoogle'));
+router.use('/authfacebook', require('./authfacebook'));
 module.exports = router;
